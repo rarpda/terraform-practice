@@ -30,7 +30,7 @@ resource "aws_instance" "testEC2" {
   instance_type     = "t2.micro"
   availability_zone = "eu-west-2a"
   security_groups   = [aws_security_group.no_traffic.name]
-  key_name      = aws_key_pair.mykey.key_name
+  key_name          = aws_key_pair.mykey.key_name
   tags              = local.common_tags
 
   root_block_device {
@@ -64,12 +64,12 @@ resource "aws_security_group" "no_traffic" {
   name        = "https"
   description = "Allow TLS inbound traffic"
   vpc_id      = data.aws_vpc.default.id
-  
-  
+
+
   ingress {
     description = "ssh from anywhere"
     protocol    = "tcp"
-    cidr_blocks  = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]
     from_port   = 22
     to_port     = 22
   }
