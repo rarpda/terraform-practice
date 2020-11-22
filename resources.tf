@@ -20,45 +20,6 @@ locals {
   }
 }
 
-resource "aws_key_pair" "mykey" {
-  key_name   = "mykey"
-  public_key = file("mykey.pub")
-}
-
-resource "aws_instance" "testEC2" {
-  ami               = "ami-0271d331ac7dab654"
-  instance_type     = "t2.micro"
-  availability_zone = "eu-west-2a"
-  security_groups   = [aws_security_group.no_traffic.name]
-  key_name          = aws_key_pair.mykey.key_name
-  tags              = local.common_tags
-
-  root_block_device {
-    encrypted = true
-  }
-
-  connection {
-    host        = coalesce(self.public_ip, self.private_ip)
-    type        = "ssh"
-    user        = "ec2-user"
-    private_key = file("mykey")
-  }
-
-  provisioner "local-exec" {
-    command = "echo The server's IP address is ${self.private_ip}"
-  }
-
-  provisioner "local-exec" {
-    when    = destroy
-    command = "echo 'Destroy-time provisioner'"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "ls"
-    ]
-  }
-}
 
 resource "aws_security_group" "no_traffic" {
   name        = "https"
@@ -80,7 +41,7 @@ resource "aws_security_group" "no_traffic" {
 
 resource "aws_iam_user" "test" {
   //  name  = "${var.environments[count.index]}"
-  name  = var.environments[count.index]
+  name  = .environments[count.index]
   count = 2
 }
 
