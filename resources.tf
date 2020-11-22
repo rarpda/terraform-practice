@@ -84,8 +84,8 @@ resource "aws_iam_user" "test" {
   count = 2
 }
 
-//resource "aws_s3_bucket" "recardo" {
-//}
+resource "aws_s3_bucket" "recardo" {
+}
 
 output "test23" {
   value = data.aws_vpc.default.cidr_block
