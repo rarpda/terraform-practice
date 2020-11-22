@@ -41,7 +41,7 @@ resource "aws_security_group" "no_traffic" {
 
 resource "aws_iam_user" "test" {
   //  name  = "${var.environments[count.index]}"
-  name  = .environments[count.index]
+  name  = var.environments[count.index]
   count = 2
 }
 
